@@ -1,19 +1,66 @@
 import React, { useState } from 'react';
 import {connect} from 'react-redux';
 import {addItem, deleteItem} from './redux/actions';
-// import styled from './styled-components'
+import styled from 'styled-components'
 
-const Container = ({ wishList, onClick }) => {
-    return (
-        <div className='container'>
-            {wishList.map((item) => (
-                <div className='item' key={item} onClick={() => onClick(item)}>
-                    {item}
-                </div>
-            ))}
-        </div>
-    );
-};
+const Page = styled.div`
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #D1D1D1;
+    padding-top: 25px;
+`;
+
+const Container = styled.div`
+    width: 400px;
+    height: 540px;
+    background-color: #FCC0CB;
+    border-radius: 8px;
+    box-shadow: 0 0 13px 2px black;
+    text-align: center;
+    margin: auto;
+    padding-top: 7px;
+`;
+
+const ItemsContainer = styled.div`
+    width: 280px;
+    height: 270px;
+    background: white;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    margin: auto;
+    text-align: left;
+    padding-left: 10px;
+`;
+
+const Input = styled.input`
+    width: 285px;
+    height: 25px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 5px;
+    margin-top: 20px;
+    outline-color: #ADD3FA;
+`;
+
+const Button = styled.button.attrs(props => ({
+    size: props.size || "100px"
+}))`
+    display: block;
+    margin: 20px auto;
+    background-color: #92EC93;
+    width: ${props => props.size};
+    border: none;
+    border-radius: 5px;
+    border-width: 1px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    outline: none;
+    font-weight: bold;
+`;
 
 const App = ({ wishList, addItem, deleteItem }) => {
     const [userInput, setUserInput] = useState('');
@@ -22,12 +69,14 @@ const App = ({ wishList, addItem, deleteItem }) => {
         setUserInput(e.target.value);
     };
 
-    const handleAddClick = () => {
+    const handleAddClick = (e) => {
+        e.preventDefault();
         if (userInput.length && !wishList.includes(userInput)) addItem(userInput);
         setUserInput('');
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         if (wishList.length) {
             alert('Wish list submitted to Santa!');
             wishList.forEach((item) => deleteItem(item));
@@ -36,26 +85,29 @@ const App = ({ wishList, addItem, deleteItem }) => {
     };
         
     return (
-        <div className='app'>
-            <div className='container'>
-                <h3 className='title'>MY WISHLIST</h3>
-                <Container onClick={deleteItem} wishList={wishList} />
-                <input
+        <Page>
+            <Container>
+                <h1>MY WISHLIST</h1>
+                <ItemsContainer>
+                    {
+                    wishList.map((item, index) => {
+                            return <p
+                            key={index} 
+                            onClick={() => deleteItem(item)}
+                            style={{'cursor': 'pointer'}}>{item}</p>
+                        })
+                    }
+                </ItemsContainer>
+                <Input
                     type='text'
                     className='item-input'
                     onChange={(e) => handleInputChange(e)}
                     value={userInput}
                 />
-
-                <button className='add-btn btn' onClick={handleAddClick}>
-                    Add
-                </button>
-
-                <button className='submit-btn btn' onClick={handleSubmit}>
-                    Submit
-                </button>
-        </div>
-        </div>
+                <Button onClick={handleAddClick}>Add</Button>
+                <Button onClick={handleSubmit}>Submit</Button>
+            </Container>
+        </Page>
     );
 };
 
