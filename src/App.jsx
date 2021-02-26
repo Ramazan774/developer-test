@@ -1,8 +1,7 @@
-import React from 'react';
+import React { useState } from 'react';
 import {connect} from 'react-redux';
 import {addItem, deleteItem} from './redux/actions';
-
-import React, { Component } from 'react';
+import styled from 'styled-components'
 
 class App extends Component {
     render() {
