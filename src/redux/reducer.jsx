@@ -1,7 +1,7 @@
 import {
   ADD_ITEM,
   DELETE_ITEM,
-  CLEAR
+  SUBMIT_ITEM
 } from './actions';
 
 const INITIAL_STATE = {
@@ -19,13 +19,13 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         wishList: state.wishList.filter(item => item !== action.payload)
       };
-    case CLEAR:
+    case SUBMIT_ITEM:
       return {
-        wishList: []
+        wishList: INITIAL_STATE
       }
     default:
       return {
-        wishList: []
+        wishList: state.wishList
       };
   }
 };
